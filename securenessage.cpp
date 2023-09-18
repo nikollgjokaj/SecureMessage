@@ -22,17 +22,26 @@ int main() {
     string inputFileName, outputFileName, key;
     char choice;
 
-    cout << "Do you want to encrypt (E) or decrypt (D)? ";
-    cin >> choice;
+    do {
+        cout << "Do you want to encrypt (E) or decrypt (D)? ";
+        cin >> choice;
+        cin.ignore(); // Ignore any extra characters, including newlines
+
+        if (choice == 'E' || choice == 'e' || choice == 'D' || choice == 'd') {
+            break; // Valid choice, exit the loop.
+        } else {
+            cerr << "Invalid choice. Please choose 'E' for encryption or 'D' for decryption." << endl;
+        }
+    } while (true);
 
     cout << "Enter the input file name: ";
-    cin >> inputFileName;
+    getline(cin, inputFileName); // Use getline to read the entire line
 
     cout << "Enter the output file name: ";
-    cin >> outputFileName;
+    getline(cin, outputFileName);
 
     cout << "Enter an encryption key: ";
-    cin >> key;
+    getline(cin, key);
 
     // Read file
     ifstream inputFile(inputFileName);
