@@ -1,10 +1,12 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <limits> // Für die Eingabeüberprüfung
+#include <cstdlib> // Für das Löschen des Bildschirms
 
 using namespace std;
 
-// Function for encryption
+// Funktion für die Verschlüsselung
 string encrypt(const string& input, const string& key) {
     string output = input;
     for (size_t i = 0; i < input.size(); ++i) {
@@ -13,29 +15,42 @@ string encrypt(const string& input, const string& key) {
     return output;
 }
 
-// Function for decryption
+// Funktion für die Entschlüsselung
 string decrypt(const string& input, const string& key) {
-    return encrypt(input, key); // Decryption is identical to encryption in XOR.
+    return encrypt(input, key); // Entschlüsselung ist identisch mit Verschlüsselung in XOR.
+}
+
+// Funktion, um den Bildschirm zu löschen
+void clearScreen() {
+    system("clear"); // Für Unix/Linux
+    // system("cls"); // Für Windows
 }
 
 int main() {
     string inputFileName, outputFileName, key;
     char choice;
 
-    do {
-        cout << "Do you want to encrypt (E) or decrypt (D)? ";
-        cin >> choice;
-        cin.ignore(); // Ignore any extra characters, including newlines
+    clearScreen(); // Löschen Sie den Bildschirm, um einen "sauberen" Look zu erhalten
 
-        if (choice == 'E' || choice == 'e' || choice == 'D' || choice == 'd') {
-            break; // Valid choice, exit the loop.
+    cout << "\033[1;32mWelcome to the Encryption/Decryption Program\033[0m" << endl; // Verwenden Sie grüne Schriftfarbe für die Überschrift
+
+    do {
+        cout << "Do you want to \033[1;34mencrypt (E)\033[0m or \033[1;34mdecrypt (D)\033[0m, or \033[1;31mquit (Q)\033[0m? ";
+        cin >> choice;
+        cin.ignore(); // Ignorieren Sie zusätzliche Zeichen, einschließlich Zeilenumbrüchen
+
+        if (choice == 'Q' || choice == 'q') {
+            cout << "\033[1;31mOperation canceled.\033[0m" << endl;
+            return 0;
+        } else if (choice == 'E' || choice == 'e' || choice == 'D' || choice == 'd') {
+            break; // Gültige Auswahl, die Schleife verlassen.
         } else {
-            cerr << "Invalid choice. Please choose 'E' for encryption or 'D' for decryption." << endl;
+            cout << "\033[1;31mInvalid choice. Please enter \033[1;34m'E'\033[0m for encryption, \033[1;34m'D'\033[0m for decryption, or \033[1;31m'Q'\033[0m to quit.\n";
         }
     } while (true);
 
     cout << "Enter the input file name: ";
-    getline(cin, inputFileName); // Use getline to read the entire line
+    getline(cin, inputFileName);
 
     cout << "Enter the output file name: ";
     getline(cin, outputFileName);
@@ -43,10 +58,9 @@ int main() {
     cout << "Enter an encryption key: ";
     getline(cin, key);
 
-    // Read file
     ifstream inputFile(inputFileName);
     if (!inputFile) {
-        cerr << "Error opening the input file." << endl;
+        cerr << "\033[1;31mError opening the input file.\033[0m" << endl;
         return 1;
     }
 
@@ -56,27 +70,23 @@ int main() {
     string resultText;
 
     if (choice == 'E' || choice == 'e') {
-        // Encrypt
         resultText = encrypt(fileContents, key);
     } else if (choice == 'D' || choice == 'd') {
-        // Decrypt
         resultText = decrypt(fileContents, key);
-    } else {
-        cerr << "Invalid choice. Please choose 'E' for encryption or 'D' for decryption." << endl;
-        return 1;
     }
 
-    // Write text to output file
     ofstream outputFile(outputFileName);
     if (!outputFile) {
-        cerr << "Error opening the output file." << endl;
+        cerr << "\033[1;31mError opening the output file.\033[0m" << endl;
         return 1;
     }
 
     outputFile << resultText;
     outputFile.close();
 
-    cout << "Operation completed." << endl;
+    clearScreen(); // Löschen Sie den Bildschirm, um einen "sauberen" Look zu erhalten
+    cout << "\033[1;32mOperation completed.\033[0m" << endl;
 
     return 0;
 }
+
