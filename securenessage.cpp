@@ -22,8 +22,11 @@ string decrypt(const string& input, const string& key) {
 
 // Function to clear the screen
 void clearScreen() {
+  #if defined(__linux__) 
     system("clear"); // For Unix/Linux
-    // system("cls"); // For Windows
+  #else
+    system("cls"); // For Windows
+  #endif
 }
 
 int main() {
