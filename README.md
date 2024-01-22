@@ -63,6 +63,3 @@ Enter the output file name: encrypted.txt
 Enter an encryption key: mysecretkey
 Operation completed.
 
-Notes
-
-    The program clears the screen for a clean look using the system("clear") command. If you're using Windows, you can uncomment system("cls") and comment out system("clear").
